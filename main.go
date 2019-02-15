@@ -48,6 +48,8 @@ func main() {
 				cfg.Section(section).Key(key).SetValue(fmt.Sprint(value))
 			}
 		}
+
+		cfg.SaveTo(filename)
 	} else if numArgs == 4 {
 		section := os.Args[2]
 		key := os.Args[3]
@@ -59,7 +61,7 @@ func main() {
 		value := os.Args[3]
 
 		cfg.Section(section).Key(key).SetValue(value)
-	}
 
-	cfg.SaveTo(filename)
+		cfg.SaveTo(filename)
+	}
 }
