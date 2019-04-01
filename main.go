@@ -21,7 +21,7 @@ func main() {
 	}
 
 	filename := os.Args[1]
-	cfg, err := ini.Load(filename)
+	cfg, err := ini.LoadSources(ini.LoadOptions{PreserveSurroundedQuote: true}, filename)
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
 		os.Exit(1)
@@ -45,7 +45,7 @@ func main() {
 
 		for section, sectionData := range dict {
 			for key, value := range sectionData.(map[string]interface{}) {
-				cfg.Section(section).Key(key).SetValue(fmt.Sprint(value))
+				cfg.Section(section).Key(key).SetValue(fmt.Sprintf("\"%v\"", value))
 			}
 		}
 
