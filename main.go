@@ -6,6 +6,8 @@ import (
 	"github.com/go-ini/ini"
 	"gopkg.in/yaml.v2"
 	"os"
+	"reflect"
+	"strings"
 )
 
 func main() {
@@ -45,7 +47,23 @@ func main() {
 
 		for section, sectionData := range dict {
 			for key, value := range sectionData.(map[interface{}]interface{}) {
-				cfg.Section(section.(string)).Key(key.(string)).SetValue(fmt.Sprintf("\"%v\"", value))
+				rt := reflect.TypeOf(value)
+
+				var strValue string
+
+				switch rt.Kind() {
+				case reflect.Slice, reflect.Array:
+					value := value.([] interface {})
+					valueStrList := make([]string, len(value))
+					for i, v := range value {
+						valueStrList[i] = fmt.Sprint(v)
+					}
+					strValue = strings.Join(valueStrList, ",")
+				default:
+					strValue = fmt.Sprintf("\"%v\"", value)
+
+				}
+				cfg.Section(section.(string)).Key(key.(string)).SetValue(strValue)
 			}
 		}
 
@@ -58,7 +76,7 @@ func main() {
 	} else {
 		section := os.Args[2]
 		key := os.Args[3]
-		value := os.Args[3]
+		value := os.Args[4]
 
 		cfg.Section(section).Key(key).SetValue(value)
 
