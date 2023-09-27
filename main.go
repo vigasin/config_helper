@@ -10,14 +10,21 @@ import (
 	"strings"
 )
 
+var Version string;
+
 func main() {
 	numArgs := len(os.Args)
 
-	if numArgs < 3 || numArgs > 5 {
-		fmt.Println(`Usage:\n\
+    if numArgs == 2 && os.Args[1] == "--version" {
+		fmt.Println(Version)
+
+		os.Exit(1)
+    } else if numArgs < 3 || numArgs > 5 {
+		fmt.Println(`Usage:
 			config_helper <file> <base64_yaml_data>
 			config_helper <file> <section> <name>
-			config_helper <file> <section> <name> <value>`)
+			config_helper <file> <section> <name> <value>
+			config_helper --version`)
 
 		os.Exit(1)
 	}
