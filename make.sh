@@ -1,12 +1,5 @@
 #!/bin/bash -e
 
-function init_project()
-{
-    brew update
-    brew install protoc-gen-go protoc-gen-go-grpc
-    GO111MODULE=on go get github.com/golang/mock/mockgen@v1.4.4
-}
-
 function latest_version()
 {
     aws s3 ls s3://nxcloud-devtools/linux/config_helper/  | grep PRE | grep -v latest | sed 's%.*PRE \([^/]*\).*$%\1%' | sort -V | tail -1
